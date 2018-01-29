@@ -1,0 +1,6 @@
+classes=2
+train=
+valid=
+names = data/sensity.names
+backup = backup_weights
+

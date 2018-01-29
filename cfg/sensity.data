@@ -1,6 +1,6 @@
-classes=2
-train=
-valid=
+classes=3
+train=/home/csbotos/yolo-TrafficDetector/data/train/train.txt
+valid=/home/csbotos/yolo-TrafficDetector/data/val/val.txt
 names = data/sensity.names
 backup = backup_weights
 

@@ -18,8 +18,16 @@ mkdir data
 cd data
 mkdir train
 cd train
-echo "Linking training images..."
-ln -sv $TRAIN_IMAGE_DIR .
+echo "Synchronizing training images..."
+rsync $TRAIN_IMAGE_DIR/ images -a --info=PROGRESS2,SYMSAFE
+chown $USER:$USER images/
+echo "Converting to JPG"
+cd images
+for f in $(ls); do
+  sudo mogrify -format jpg $f &
+done
+cd ..
+find $(pwd)/images/ -name "*.jpg" > train.txt
 echo "Synchronizing labels:" $VAL_LABEL_DIR
 rsync $TRAIN_LABEL_DIR/ labels -a --info=PROGRESS2,SYMSAFE
 echo "Preprocessing labels (takes 1-2 min)..."
@@ -34,8 +42,16 @@ echo
 cd $ROOT_DIR/data
 mkdir val
 cd val
-echo "LINKING VALIDATING IMAGES"
-ln -s $VAL_IMAGE_DIR .
+echo "Synchronizing validation images..."
+rsync $VAL_IMAGE_DIR/ images -a --info=PROGRESS2,SYMSAFE
+chown $USER:$USER images/
+echo "Converting to JPG"
+cd images
+for f in $(ls); do
+  sudo mogrify -format jpg $f &
+done
+cd ..
+find $(pwd)/images/ -name "*.jpg" > val.txt
 echo "Synchronizing labels:" $VAL_LABEL_DIR
 rsync $VAL_LABEL_DIR/ labels -a --info=PROGRESS2,SYMSAFE
 echo "Preprocessing labels (takes 1-2 min)..."
@@ -43,3 +59,4 @@ cd labels
 for f in $(ls); do
   $ROOT_DIR/detectnet2yolo.py $f >> log &
 done
+cd $ROOT_DIR

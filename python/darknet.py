@@ -2,6 +2,8 @@ from ctypes import *
 import math
 import random
 
+import sys
+
 def sample(probs):
     s = sum(probs)
     probs = [a/s for a in probs]
@@ -133,9 +135,9 @@ if __name__ == "__main__":
     #meta = load_meta("cfg/imagenet1k.data")
     #r = classify(net, meta, im)
     #print r[:10]
-    net = load_net("cfg/tiny-yolo.cfg", "tiny-yolo.weights", 0)
-    meta = load_meta("cfg/coco.data")
-    r = detect(net, meta, "data/dog.jpg")
-    print r
+    net = load_net(b"cfg/sensity-architecture.cfg", b"backup_weights/sensity-architecture.backup", 0)
+    meta = load_meta(b"cfg/sensity.data")
+    r = detect(net, meta, bytes(sys.argv[1], "UTF-8"))
+    print(r)
     
 
